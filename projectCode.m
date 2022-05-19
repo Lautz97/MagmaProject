@@ -48,13 +48,16 @@ m2 := 0x0;
 kPrime := 0x0;
 
 // xBad32()
+//Integers Ring
 Z := Integers();
+//Integers Ring mod N
+modN := Integers(moduloBob);
+
 function FindPhi(N, e, d)
     p := 0;
     q := 0;
     X := {2..9};
     x := Random(X);
-    modN := Integers(N);
 
     i := 2;
     exp := (e * d) - 1;
@@ -76,6 +79,15 @@ end function;
 
 phiN := FindPhi(moduloBob, expPrivatoBob, expPubblicoBob);
 
-nuovoExpPrivatoBob := Z!Integers(phiN)!(nuovoExpPubblicoBob^(-1));
+// Integers Ring modulo Phi(N)
+modPhiN := Integers(phiN);
 
-"found d' :"; Integers(phiN)!(nuovoExpPrivatoBob * nuovoExpPubblicoBob) eq 1;
+nuovoExpPrivatoBob := Z!modPhiN!(nuovoExpPubblicoBob^(-1));
+
+"found d' : ", modPhiN!(nuovoExpPrivatoBob * nuovoExpPubblicoBob) eq 1;
+"d' : ", nuovoExpPrivatoBob;
+
+k1 := modN!m^nuovoExpPrivatoBob;
+
+k1;
+
